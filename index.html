@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hyperfocus Forge</title>
+    <style>
+        body {
+            background-color: #1a102f;
+            color: #e0d7f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+        }
+        .forge-container {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 20px;
+        }
+        .canvas-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #48cae4;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+        .creation-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 35px;
+            background: #2d1b4e;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        input[type="text"] {
+            flex: 1;
+            background: #1a102f;
+            border: 1px solid #7b52b9;
+            border-radius: 6px;
+            color: #ffffff;
+            padding: 12px;
+            font-size: 16px;
+            outline: none;
+        }
+        input[type="text"]::placeholder {
+            color: #a393bf;
+            opacity: 0.6;
+        }
+        .forge-btn {
+            background: #48cae4;
+            border: none;
+            color: #0b132b; 
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .list-section {
+            margin-bottom: 30px;
+        }
+        .category-header {
+            background: #2d1b4e;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 70%;
+        }
+        .tool-strip {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .task-container {
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .task-row {
+            background: rgba(45, 27, 78, 0.5);
+            padding: 12px 16px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 60%;
+        }
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #48cae4;
+            cursor: pointer;
+            background: transparent;
+        }
+        .task-text {
+            color: #e0d7f5;
+            font-size: 16px;
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+        }
+        .counter-btn {
+            background: transparent;
+            border: 1px solid #7b52b9;
+            color: #a393bf;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .repeat-toggle-active {
+            background: transparent;
+            border: 1px solid #48cae4;
+            color: #48cae4;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .na-btn {
+            background: transparent;
+            border: 1px solid #7b52b9;
+            color: #a393bf;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .inject-btn {
+            background: transparent;
+            border: 1px solid #48cae4;
+            color: #48cae4;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .veto-btn {
+            background: transparent;
+            color: #ff4d4d;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="forge-container">
+        <div class="canvas-header">HYPERFOCUS FORGE</div>
+        <div class="creation-bar">
+            <input type="text" id="newListInput" placeholder="Type custom category headline here...">
+            <button class="forge-btn" onclick="addNewList()">+ Add List Header</button>
+        </div>
+        <div id="masterCanvas">
+            <div class="list-section" id="sec-alex">
+                <div class="category-header">
+                    <input type="text" class="header-text" value="Alex">
+                    <div class="tool-strip">
+                        <button class="inject-btn" onclick="injectTask('sec-alex')">↳ Inject</button>
+                        <button class="veto-btn" onclick="document.getElementById('sec-alex').remove()">✕</button>
+                    </div>
+                </div>
+                <div class="task-container" id="tasks-sec-alex"></div>
+            </div>
+            <div class="list-section" id="sec-dragon">
+                <div class="category-header">
+                    <input type="text" class="header-text" value="Dragon Passion Project App">
+                    <div class="tool-strip">
+                        <button class="inject-btn" onclick="injectTask('sec-dragon')">↳ Inject</button>
+                        <button class="veto-btn" onclick="document.getElementById('sec-dragon').remove()">✕</button>
+                    </div>
+                </div>
+                <div class="task-container" id="tasks-sec-dragon"></div>
+            </div>
+            <div class="list-section" id="sec-dominic">
+                <div class="category-header">
+                    <input type="text" class="header-text" value="Dominic">
+                    <div class="tool-strip">
+                        <button class="inject-btn" onclick="injectTask('sec-dominic')">↳ Inject</button>
+                        <button class="veto-btn" onclick="document.getElementById('sec-dominic').remove()">✕</button>
+                    </div>
+                </div>
+                <div class="task-container" id="tasks-sec-dominic"></div>
+            </div>
+            <div class="list-section" id="sec-health">
+                <div class="category-header">
+                    <input type="text" class="header-text" value="Personal Health Care">
+                    <div class="tool-strip">
+                        <button class="inject-btn" onclick="injectTask('sec-health')">↳ Inject</button>
+                        <button class="veto-btn" onclick="document.getElementById('sec-health').remove()">✕</button>
+                    </div>
+                </div>
+                <div class="task-container" id="tasks-sec-health"></div>
+            </div>
+            <div class="list-section" id="sec-exercise">
+                <div class="category-header">
+                    <input type="text" class="header-text" value="Daily Exercises">
+                    <div class="tool-strip">
+                        <button class="inject-btn" onclick="injectTask('sec-exercise')">↳ Inject</button>
+                        <button class="veto-btn" onclick="document.getElementById('sec-exercise').remove()">✕</button>
+                    </div>
+                </div>
+                <div class="task-container" id="tasks-sec-exercise"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function addNewList() {
+            const input = document.getElementById('newListInput');
+            const canvas = document.getElementById('masterCanvas');
+            const id = 'sec-' + Date.now();
+            if (input.value.trim() !== "") {
+                const section = document.createElement('div');
+                section.className = 'list-section';
+                section.id = id;
+                section.innerHTML = `
+                    <div class="category-header">
+                        <input type="text" class="header-text" value="${input.value}">
+                        <div class="tool-strip">
+                            <button class="inject-btn" onclick="injectTask('${id}')">↳ Inject</button>
+                            <button class="veto-btn" onclick="document.getElementById('${id}').remove()">✕</button>
+                        </div>
+                    </div>
+                    <div class="task-container" id="tasks-${id}"></div>
+                `;
+                canvas.appendChild(section);
+                input.value = "";
+            }
+        }
+        function injectTask(sectionId) {
+            const container = document.getElementById('tasks-' + sectionId);
+            const taskRow = document.createElement('div');
+            taskRow.className = 'task-row';
+            taskRow.innerHTML = `
+                <div class="task-left">
+                    <div class="task-checkbox" onclick="fadeAndVanish(this)"></div>
+                    <input type="text" class="task-text" placeholder="Type task here...">
+                </div>
+                <div class="tool-strip">
